@@ -9,12 +9,14 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Posts', backref='author', lazy=True)
 
 
-    def __init__(self, username):
+
+    def __init__(self, username, email, password):
         """initialize with name."""
-        self.username = name
+        self.username = username
+        self.email = email
+        self.password = password
 
     def save(self):
         db.session.add(self)
