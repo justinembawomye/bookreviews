@@ -1,3 +1,4 @@
+import os, csv, psycopg2
 from application import db, login_manager
 from flask_login import UserMixin
 
@@ -45,7 +46,7 @@ class Book(db.Model):
     isbn = db.Column(db.String(20), nullable=False)
     title = db.Column(db.String(120),  nullable=False)
     author = db.Column(db.String(60), nullable=False)
-    year = db.Column(db.Integer, nullable=False)
+    year = db.Column(db.String(20), nullable=False)
 
     def __init__(self, isbn, title, author, year):
         """initialize with name."""
@@ -68,3 +69,23 @@ class Book(db.Model):
 
     def __repr__(self):
         return f"Book: {self.title}"
+
+    @staticmethod
+    def connection():
+        b = open('books.csv')    
+        reader = csv.reader(b)
+        for isbn, title, author, year in reader:
+            books = Book(isbn=isbn, title=title, author=author, year=year)
+            books.save()
+
+
+
+class Reviews(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    isbn = db.Column(db.String(50))
+    review_text = db.Column(db.String(10000), nullable=False)
+    rating = db.Column(db.Float())    
+
+    def __str__(self):
+        return f"Reviews: {review_text}, {rating}"        
