@@ -55,15 +55,25 @@ def create_app(config_name):
             if user and bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
                 flash(f'Welcome', 'success')
+                return redirect(url_for('index'))
             else:
                 flash("Login failed. Please check email and password", "danger")
         return render_template('login.html', title="Login", form=form)
+
+
 
     @app.route('/logout')
     @login_required
     def logout():
         logout_user 
-        return render_template('index.html')   
+        return render_template('index.html') 
+
+
+    @app.route('/books')
+    @login_required
+    def books():
+        books = Book.query.all()
+        return render_template('books.html', books=books)
 
 
     return app
