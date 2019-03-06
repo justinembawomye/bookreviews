@@ -1,4 +1,6 @@
-import os, csv, psycopg2
+import os
+import csv
+import psycopg2
 from application import db, login_manager
 from flask_login import UserMixin
 
@@ -17,6 +19,8 @@ class User(db.Model,   UserMixin):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    user_reviews = db.relationship('Reviews',
+                              backref='reviewer', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, username, email, password):
         """initialize with name."""
@@ -47,6 +51,8 @@ class Book(db.Model):
     title = db.Column(db.String(120),  nullable=False)
     author = db.Column(db.String(60), nullable=False)
     year = db.Column(db.String(20), nullable=False)
+    reviews = db.relationship(
+        'Reviews', backref='author', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, isbn, title, author, year):
         """initialize with name."""
@@ -72,20 +78,20 @@ class Book(db.Model):
 
     @staticmethod
     def connection():
-        b = open('books.csv')    
+        b = open('books.csv')
         reader = csv.reader(b)
         for isbn, title, author, year in reader:
             books = Book(isbn=isbn, title=title, author=author, year=year)
             books.save()
 
 
-
 class Reviews(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
     isbn = db.Column(db.String(50))
     review_text = db.Column(db.String(10000), nullable=False)
-    rating = db.Column(db.Float())    
+    rating = db.Column(db.Integer)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __str__(self):
-        return f"Reviews: {review_text}, {rating}"        
+        return f"Reviews: {self.review_text}, {self.rating}"
