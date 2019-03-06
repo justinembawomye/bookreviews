@@ -2,8 +2,41 @@
 
 {% block content %}
 
-    {% for book in books %}
-        <h3>{{book}}</h3>
-    {% endfor %}
+
+<div class="content-section">
+    <form method="POST" action="">
+        {{form.hidden_tag()}}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Search for your favorite books</legend>
+            <div class="form-group">
+                {{form.content.label(class="form-control-label")}}
+
+                {% if form.content.errors %}
+                {{form.content(class="form-control form-control-lg is-invalid")}}
+
+                <div class="invalid-feedback">
+                    {% for error in form.content.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{form.content(class="form-control form-control-lg")}}
+                {% endif %}
+
+        </fieldset>
+
+        <div class="form-group">
+            {{form.submit(class="btn btn-outline-info")}}
+        </div>
+
+    </form>
+</div>
+
+
+
+
+{% for book in books %}
+<h3>{{book}}</h3>
+{% endfor %}
 
 {% endblock %}
