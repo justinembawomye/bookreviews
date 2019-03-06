@@ -83,5 +83,11 @@ def create_app(config_name):
                 return render_template('error.html', message=message)
            # return render_template('results.html', books=books)
         return render_template('books.html', form=form, books=books)
+
+    @app.route("/book/<int:book_id>", methods=['GET', 'POST'])
+    @login_required
+    def book(book_id):
+        response = Book.query.filter_by(id=book_id).first()
+        return render_template('book_details.html',response=response)
   
     return app
