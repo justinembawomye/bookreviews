@@ -1,4 +1,5 @@
 
+
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -7,8 +8,7 @@ from flask_login import login_user, current_user, logout_user, login_required, L
 # local import
 from instance.config import app_config
 from flask import render_template, redirect, url_for, flash
-from .forms import RegistrationForm, LoginForm, SearchForm
-
+from .forms import RegistrationForm, LoginForm, SearchForm, ReviewsForm
 
 
 # initialize sql-alchemy
@@ -16,7 +16,7 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 
-from .models import User, Book
+from .models import User, Book, Reviews
 
 def create_app(config_name):
     app = Flask(__name__, instance_relative_config=True)
@@ -31,7 +31,6 @@ def create_app(config_name):
     def index():
         books = Book.query.all()
         return render_template('index.html')
-
 
     @app.route('/register', methods=['POST', 'GET'])
     def register():
@@ -60,24 +59,22 @@ def create_app(config_name):
                 flash("Login failed. Please check email and password", "danger")
         return render_template('login.html', title="Login", form=form)
 
-
-
     @app.route('/logout')
     @login_required
     def logout():
-        logout_user 
-        return render_template('index.html') 
-
+        logout_user
+        return render_template('index.html')
 
     @app.route('/books', methods=['POST', 'GET'])
     @login_required
     def books():
         form = SearchForm()
-        books=Book.query.all()
+        books = Book.query.all()
         message = None
         if form.validate_on_submit():
             results = form.content.data
-            books = Book.query.filter((Book.isbn.contains(results)) | (Book.title.contains(results)) | (Book.author.contains(results)) | (Book.year.contains(results)))
+            books = Book.query.filter((Book.isbn.contains(results)) | (Book.title.contains(
+                results)) | (Book.author.contains(results)) | (Book.year.contains(results)))
             if not books:
                 message = "No books found"
                 return render_template('error.html', message=message)
@@ -88,6 +85,17 @@ def create_app(config_name):
     @login_required
     def book(book_id):
         response = Book.query.filter_by(id=book_id).first()
-        return render_template('book_details.html',response=response)
-  
+        no_of_reviews = Reviews.query.filter_by(book_id=book_id).all()
+        user_review = Reviews.query.filter_by(
+            reviewer=current_user, book_id=book_id).first()
+        form = ReviewsForm()
+        if not user_review:
+            if form.validate_on_submit():
+                review = Reviews(review_text=form.review_text.data,
+                                 rating=form.rating.data, book_id=book_id, reviewer=current_user)
+                db.session.add(review)
+                db.session.commit()
+                return redirect(url_for('book', book_id=book_id))
+        return render_template('book_details.html', response=response, reviews=no_of_reviews, user_review=user_review, form=form)
+
     return app
