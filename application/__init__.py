@@ -7,7 +7,7 @@ from flask_login import login_user, current_user, logout_user, login_required, L
 # local import
 from instance.config import app_config
 from flask import render_template, redirect, url_for, flash
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, SearchForm
 
 
 
@@ -55,7 +55,7 @@ def create_app(config_name):
             if user and bcrypt.check_password_hash(user.password, form.password.data):
                 login_user(user)
                 flash(f'Welcome', 'success')
-                return redirect(url_for('index'))
+                return redirect(url_for('books'))
             else:
                 flash("Login failed. Please check email and password", "danger")
         return render_template('login.html', title="Login", form=form)
@@ -69,11 +69,19 @@ def create_app(config_name):
         return render_template('index.html') 
 
 
-    @app.route('/books')
+    @app.route('/books', methods=['POST', 'GET'])
     @login_required
     def books():
-        books = Book.query.all()
-        return render_template('books.html', books=books)
-
-
+        form = SearchForm()
+        books=Book.query.all()
+        message = None
+        if form.validate_on_submit():
+            results = form.content.data
+            books = Book.query.filter((Book.isbn.contains(results)) | (Book.title.contains(results)) | (Book.author.contains(results)) | (Book.year.contains(results)))
+            if not books:
+                message = "No books found"
+                return render_template('error.html', message=message)
+           # return render_template('results.html', books=books)
+        return render_template('books.html', form=form, books=books)
+  
     return app
