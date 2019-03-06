@@ -1,5 +1,6 @@
 
-
+import os
+import requests
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -15,6 +16,7 @@ from .forms import RegistrationForm, LoginForm, SearchForm, ReviewsForm
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
+
 
 from .models import User, Book, Reviews
 
@@ -88,6 +90,7 @@ def create_app(config_name):
         no_of_reviews = Reviews.query.filter_by(book_id=book_id).all()
         user_review = Reviews.query.filter_by(
             reviewer=current_user, book_id=book_id).first()
+        api_key = os.environ.get('API_KEY')
         form = ReviewsForm()
         if not user_review:
             if form.validate_on_submit():
@@ -96,6 +99,11 @@ def create_app(config_name):
                 db.session.add(review)
                 db.session.commit()
                 return redirect(url_for('book', book_id=book_id))
-        return render_template('book_details.html', response=response, reviews=no_of_reviews, user_review=user_review, form=form)
+        res = requests.get("https://www.goodreads.com/book/review_counts.json",
+                           params={"key": api_key, "isbns":response.isbn})
+        if res.status_code != 200:
+            raise Exception("msg: Request failed.")
+        goodreads_reviews = res.json()['books']
+        return render_template('book_details.html', goodreads_reviews=goodreads_reviews, response=response, reviews=no_of_reviews, user_review=user_review, form=form)    
 
     return app
