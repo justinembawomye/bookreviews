@@ -16,8 +16,17 @@
 {% else %}
 <h2>No Reviews on this book</h2>
 {% endif %}
+<hr>
 
-
+<h2>Goodreads reviews</h2>
+{% if goodreads_reviews %}
+<ul>
+        {% for review in goodreads_reviews %}
+                <li>Average rating -- {{ review.average_rating }}</li>
+                <li>Number of ratings -- {{ review.ratings_count }}</li>
+        {% endfor %}
+</ul>
+{% endif %}
 
 
 
