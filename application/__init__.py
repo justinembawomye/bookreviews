@@ -105,5 +105,21 @@ def create_app(config_name):
             raise Exception("msg: Request failed.")
         goodreads_reviews = res.json()['books']
         return render_template('book_details.html', goodreads_reviews=goodreads_reviews, response=response, reviews=no_of_reviews, user_review=user_review, form=form)    
-
+        
+    @app.route("/api/<isbn>", methods =['GET'])
+    def api(isbn):
+        book = Book.query.filter_by(isbn=isbn).first()
+        if book is None:
+            return jsonify({"msg" : "No results found.Please check the isbn"}), 404
+        reviews = book.reviews
+        review_count = len(reviews)
+    
+        return jsonify({        
+            "title": book.title,
+            "author":book.author,
+            "publication_year": book.year,
+            "isbn_number":book.isbn,
+            "review_count":review_count,
+            "average_score":5.0
+        }),200
     return app
