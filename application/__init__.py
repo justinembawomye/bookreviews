@@ -29,10 +29,18 @@ def create_app(config_name):
     login_manager.init_app(app)
     db.init_app(app)
 
-    @app.route('/')
+    @app.route('/', methods=['POST', 'GET'])
     def index():
-        books = Book.query.all()
-        return render_template('index.html')
+        form = LoginForm()
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=form.email.data).first()
+            if user and bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user)
+                flash(f'Welcome', 'success')
+                return redirect(url_for('books'))
+            else:
+                flash("Login failed. Please check email and password", "danger")
+        return render_template('index.html', form=form)
 
     @app.route('/register', methods=['POST', 'GET'])
     def register():
@@ -64,7 +72,7 @@ def create_app(config_name):
     @app.route('/logout')
     @login_required
     def logout():
-        logout_user
+        logout_user()
         return render_template('index.html')
 
     @app.route('/books', methods=['POST', 'GET'])
