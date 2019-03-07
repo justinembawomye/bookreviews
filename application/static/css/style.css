@@ -1,0 +1,29 @@
+nav{
+  top:0 !important;
+  background-color:#bf360c;
+}
+
+a:hover{
+  text-decoration: none;
+  color:#ddd;
+}
+.img{
+  margin-top:10%;
+  width: 80%;
+  height: 90%;
+}
+.head{
+  top:10%;
+}
+.home{
+  padding:20px;
+}
+
+.page-footer{
+  margin-top: 5%;
+  background-color: #bf360c;
+}
+#copyright{
+  text-align: center;
+
+}
