@@ -1,7 +1,10 @@
 import os, psycopg2, csv
 
+
+
+
 DATABASE_URL = "postgresql://localhost/bookreview1"
-conn = psycopg2.connect(host="localhost",database="bookreview1", user="postgres", password="justine")
+conn = psycopg2.connect(host="localhost",database="bookreview", user="postgres", password="joyce")
 
 csvfile = open("books.csv") 
 reader = csv.reader(csvfile,delimiter=',')

@@ -6,6 +6,7 @@ nav{
 a:hover{
   text-decoration: none;
   color:#ddd;
+  text-decoration: bold;
 }
 .img{
   margin-top:10%;

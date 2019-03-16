@@ -14,13 +14,13 @@ class User(db.Model,   UserMixin):
 
     """This class represents the bucketlist table."""
 
-    __tablename__ = 'users'
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     user_reviews = db.relationship('Reviews',
-                              backref='reviewer', lazy=True, cascade="all, delete-orphan")
+                            backref='reviewer', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, username, email, password):
         """initialize with name."""
@@ -45,14 +45,14 @@ class User(db.Model,   UserMixin):
 
 
 class Book(db.Model):
-    __tablename__ = 'books'
+    __tablename__ = 'book'
     id = db.Column(db.Integer, primary_key=True)
     isbn = db.Column(db.String(20), nullable=False)
     title = db.Column(db.String(120),  nullable=False)
     author = db.Column(db.String(60), nullable=False)
     year = db.Column(db.String(20), nullable=False)
     reviews = db.relationship(
-        'Reviews', backref='author', lazy=True, cascade="all, delete-orphan")
+       'Reviews', backref='author', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, isbn, title, author, year):
         """initialize with name."""
@@ -90,8 +90,8 @@ class Reviews(db.Model):
     isbn = db.Column(db.String(50))
     review_text = db.Column(db.String(10000), nullable=False)
     rating = db.Column(db.Integer)
-    book_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __str__(self):
         return f"Reviews: {self.review_text}, {self.rating}"
