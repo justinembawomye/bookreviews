@@ -29,6 +29,8 @@ class StagingConfig(Config):
 class ProductionConfig(Config):
     """Configurations for Production."""
     SQLALCHEMY_DATABASE_URI = 'postgres://ufwojwslbdliif:34110e60464170d94a0f2757e4868fd619ed1cc0f7c78309380dbbdb77e1b00e@ec2-54-221-236-144.compute-1.amazonaws.com:5432/dafepc3vqru2i'
+    SECRET_KEY = 'thisismysecretkey'
+
     DEBUG = False
     TESTING = False
 
