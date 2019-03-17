@@ -3,31 +3,9 @@
 {% block content %}
 
 
-<form action="" class="browser-default right">
-        {{form.hidden_tag()}}
-        <!-- <input id="search-input" placeholder="Search" type="text" class="browser-default search-field" name="q" value="" autocomplete="off" aria-label="Search box"> -->
-        {{form.content.label(class="form-control-label")}}
-        {{form.content}} {{form.submit(class="btn btn-outline-info")}}
-        <!-- <label for="search-input"><i class="material-icons search-icon">search</i></label> 
-        <i class="material-icons search-close-icon">cancel</i> -->
-        <!-- <div class="search-popup">
-          <div class="search-content">
-            <label class="search-heading">Most Visited</label>
-            <ul class="popup-list">
-              <li class=""><a class="grey-text" href="#">Google</a></li>
-              <li class=""><a class="grey-text" href="#">Apple</a></li><li class=""><a class="grey-text" href="#">Microsoft</a></li><li class=""><a class="grey-text" href="#">Github</a></li>
-            </ul>
-          </div>
-        </div> -->
-      </form>
-    
-  </div>
-  
-  </nav>
-  
 
 
-<!-- <div class="row">
+<div class="row">
     <div class="content-section">
         <form method="POST" action="">
             {{form.hidden_tag()}}
@@ -55,7 +33,7 @@
             </div>
 
         </form>
-    </div> -->
+    </div>
 
 
 
@@ -73,7 +51,7 @@
         <tbody>
             <tr>
                 <!-- <td>{{book.isbn}}</td> -->
-                <td> <a href="{{url_for('book', book_id=book.id)}}">{{book.title}}</a></td>
+                <td> <a href="{{url_for('book', book_id=book.id)}}" class="book-link">{{book.title}}</a></td>
                 <!-- <td>{{book.author}}</td>
                     <td>{{book.year}}</td> -->
 

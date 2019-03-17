@@ -21,19 +21,12 @@ class UserTestCase(unittest.TestCase):
             # create all tables
             db.create_all()
 
+
     def test_user_creation(self):
         """Test can create a user (POST request)"""
         res = self.client.post('/register', data=json.dumps(self.data), content_type='application/json')
         self.assertEqual(res.status_code, 200)
-        # self.assertIn('You have successfully created an account! Please login', str(res.data))
-    # def test_create_user_who_exits(self):
-    #     """Test can create a user (POST request)"""
-    #     res = self.client.post('/register', data=json.dumps(self.data), content_type='application/json')
-    #     self.assertEqual(res.status_code, 302)
-
-    # def test_create_user_without_credentials(self):
-    #     res = self.client.post('/register', data=json.dumps({}), content_type='application/json')
-    #     self.assertEqual(res.status_code, 404)
+     
 
     def tearDown(self):
         """teardown all initialized variables."""

@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
         crossorigin="anonymous">
 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/materialize.css') }}">
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
 
@@ -27,11 +29,13 @@
         <div class="nav-wrapper">
             <a href="{{url_for('index')}}" class="brand-logo">Readers' site</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="{{url_for('index')}}">Home</a></li>
-                <li><a href="{{url_for('login')}}">Login</a></li>
-                <li><a href="{{url_for('register')}}">Register</a></li>
+                {% if current_user.is_authenticated %}
                 <li><a href="{{url_for('books')}}">Books</a></li>
-
+                <li><a href="{{url_for('logout')}}">logout</a></li>
+                {% else %}
+                <li><a href="{{url_for('register')}}">Register</a></li>
+                <li><a href="{{url_for('login')}}">Login</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>
@@ -66,6 +70,9 @@
     </footer>
 
     <!-- Compiled and minified JavaScript -->
+
+    <script src="{{url_for('static', filename='js/materialize.js')}}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
