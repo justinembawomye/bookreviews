@@ -5,7 +5,7 @@ from application import db, create_app
 from application import models
 
 
-app = create_app(config_name=os.getenv('APP_SETTINGS'))
+app = create_app(config_name='production')
 migrate = Migrate(app, db)
 manager = Manager(app)
 
