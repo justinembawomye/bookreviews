@@ -1,3 +1,6 @@
+body{
+  background-color: #fff;
+}
 nav{
   top:0 !important;
   background-color:#bf360c;
@@ -20,10 +23,26 @@ a:hover{
 }
 
 .page-footer{
-  margin-top: 5%;
+  margin-top: 10%;
   background-color: #bf360c;
 }
 #copyright{
   text-align: center;
 
+}
+.book-link:hover{
+color: #05f;
+}
+
+.register-form{
+  background-color:#e8eaf6;
+  margin-top:5%;
+}
+.login-link{
+  font-size: 16px;
+}
+
+.input-field{
+  color:#000;
+  font-size: 22px;
 }
