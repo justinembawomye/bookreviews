@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="row s8">
-    <div class="content-section">
+<div class="row">
+    <div class="content-section col-10">
         <form method="POST" action="">
             {{form.hidden_tag()}}
             <fieldset class="form-group">
@@ -63,9 +63,9 @@
         </form>
     </div>
 
-    <div class="border-top pt-3">
+    <div class="border-top pt-3 my-login">
         <small class="text-muted login-link">
-            Need An Account? <a href="{{url_for('register')}}" class="ml-2 login-link">Sign Up Now</a>
+            Need An Account? <a href="{{url_for('register')}}" class="ml-2 login-link  sub-link">Sign Up Now</a>
         </small>
     </div>
 </div>
