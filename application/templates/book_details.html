@@ -2,35 +2,48 @@
 
 {% block content %}
 
-<h2>{{response.title}}</h2>
-<p>{{response.isbn}}</p>
-<p>By:{{response.author}} in {{response.year}}</p>
-{% if reviews %}
-<ul>
-    {% for review in reviews %}
-    <li>{{ review.review_text }}</li>
-    <li>{{ review.rating }}</li>
-    <li>Reviewed by - {{ review.reviewer.username }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-<h2>No Reviews on this book</h2>
-{% endif %}
-<hr>
-
-<h2>Goodreads reviews</h2>
-{% if goodreads_reviews %}
-<ul>
-        {% for review in goodreads_reviews %}
-                <li>Average rating -- {{ review.average_rating }}</li>
-                <li>Number of ratings -- {{ review.ratings_count }}</li>
-        {% endfor %}
-</ul>
-{% endif %}
+<div class="center">
+        <h3>{{response.title}}</h3>
+        <p>{{response.isbn}}</p>
+        <p>By:{{response.author}} in {{response.year}}</p>
+</div>
 
 
+<div class="row">
+    <div class="col s4">
+        <h4>Book reviews</h4>
+        {% if reviews %}
+        <ul class="list-group">
+            {% for review in reviews %}
+            <li class="list-group-item">comment: {{ review.review_text }} | By - {{ review.reviewer.username }}</li>
+            <li class="list-group-item">Rating: {{ review.rating }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <h4>No Reviews on this book</h4>
+        {% endif %}
+    </div>
 
-<div class="content-section">
+    <hr>
+    <div class="col s6">
+        <h4>Goodreads reviews</h4>
+        {% if goodreads_reviews %}
+        <ul class="list-group">
+            {% for review in goodreads_reviews %}
+            <li class="list-group-item">Average rating -- {{ review.average_rating }}</li>
+            <li class="list-group-item">Number of ratings -- {{ review.ratings_count }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+
+
+<div class="content-section col s7">
     <form method="POST" action="">
         {{form.hidden_tag()}}
         <fieldset class="form-group">
@@ -72,7 +85,7 @@
         </div>
 
     </form>
-    <h2>{{ user_review }}</h2>
+  
 </div>
 
 

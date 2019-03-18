@@ -31,15 +31,6 @@ def create_app(config_name):
 
     @app.route('/', methods=['POST', 'GET'])
     def index():
-        # form = LoginForm()
-        # if form.validate_on_submit():
-        #     user = User.query.filter_by(email=form.email.data).first()
-        #     if user and bcrypt.check_password_hash(user.password, form.password.data):
-        #         login_user(user)
-        #         flash(f'Welcome', 'success')
-        #         return redirect(url_for('books'))
-        #     else:
-        #         flash("Login failed. Please check email and password", "danger")
         form = RegistrationForm()
         if form.validate_on_submit():
             hashed_password = bcrypt.generate_password_hash(
